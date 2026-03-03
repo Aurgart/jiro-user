@@ -5,6 +5,7 @@ import java_jabi.user_jiro.model.User;
 import java_jabi.user_jiro.model.UserInfo;
 import java_jabi.user_jiro.repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -14,9 +15,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class UserService {
     private final UserRepository users;
+    private final PasswordEncoder crypto;
 
     public UserInfo addUser(User user){
         validateUserData(user);
+        user.setPassword(crypto.encode(user.getPassword()));
         user = users.insert(user);
         return userToUserInfo(user);
     }
