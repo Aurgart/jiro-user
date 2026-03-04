@@ -21,6 +21,12 @@ public class UserController {
         return userService.addUser(user);
     }
 
+    @DeleteMapping
+    @Operation(summary = "Удалить сотрудника")
+    public void create(@RequestParam(required = true) Long id){
+        userService.delete(id);
+    }
+
     @GetMapping("/user/{id}")
     @Operation(summary = "Получить работающего пользователя")
     public UserInfo getById(@PathVariable("id") Long id) {

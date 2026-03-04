@@ -3,7 +3,7 @@ CREATE TABLE jiro_user.user
     id serial NOT NULL,
     login varchar NOT NULL,
     password varchar NOT NULL,
-    is_deleted boolean not null,
+    is_deleted boolean not null DEFAULT false,
     PRIMARY KEY (id)
 );
 

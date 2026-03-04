@@ -11,15 +11,14 @@ import org.springframework.stereotype.Repository;
 @AllArgsConstructor
 public class UserRepository {
     private static final String INSERT = """
-            INSERT INTO jiro_user.user(login, password, is_deleted)
-            VALUES (:login, :password, :is_deleted)
+            INSERT INTO jiro_user.user(login, password)
+            VALUES (:login, :password)
             RETURNING *;
             """;
     private static final String DELETE = """
             UPDATE jiro_user.user
             SET is_deleted = TRUE
-            WHERE id = :id
-            RETURNING *;
+            WHERE id = :id;
             """;
     private static final String GET_BY_ID = """
             SELECT *
