@@ -33,6 +33,22 @@ public class UserService {
         User user = users.getUser(id);
         return userToUserInfo(user);
     }
+    public Boolean checkUser(Long id){
+        User user = users.getById(id);
+        if(user == null){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    public Boolean checkHistUser(Long id){
+        User user = users.getUser(id);
+        if(user == null){
+            return false;
+        }else{
+            return true;
+        }
+    }
 
 
     private UserInfo userToUserInfo(User user){

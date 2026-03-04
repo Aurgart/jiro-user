@@ -30,6 +30,16 @@ public class UserController {
     @GetMapping("/hist_user/{id}")
     @Operation(summary = "Получить пользователя (включая удаленных)")
     public UserInfo GetUser(@PathVariable("id") Long id) {
-        return userService.getUser(id);
+        return  userService.getUser(id);
+    }
+    @GetMapping("/user/check/{id}")
+    @Operation(summary = "Проверка пользователя.")
+    public Boolean chById(@PathVariable("id") Long id) {
+        return  userService.checkUser(id);
+    }
+    @GetMapping("/hist_user/check/{id}")
+    @Operation(summary = "Проверка пользователя (включая удаленных)")
+    public Boolean chHist(@PathVariable("id") Long id) {
+        return  userService.checkHistUser(id);
     }
 }
