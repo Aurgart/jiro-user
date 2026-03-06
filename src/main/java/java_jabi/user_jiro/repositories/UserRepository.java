@@ -1,6 +1,7 @@
 package java_jabi.user_jiro.repositories;
 
 import java_jabi.user_jiro.model.User;
+import java_jabi.user_jiro.model.UserInfo;
 import java_jabi.user_jiro.repositories.Mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -35,7 +36,7 @@ public class UserRepository {
     private final UserMapper userMapp;
     private final NamedParameterJdbcTemplate jbcTemplate;
 
-    public User insert(User user) {
+    public UserInfo insert(User user) {
         return jbcTemplate.queryForObject(INSERT, userParamForSql(user), userMapp);
     }
 
@@ -43,11 +44,11 @@ public class UserRepository {
         jbcTemplate.update(DELETE, new MapSqlParameterSource("id", id));
     }
 
-    public User getById(Long id) {
+    public UserInfo getById(Long id) {
         return jbcTemplate.queryForObject(GET_BY_ID, new MapSqlParameterSource("id", id), userMapp);
     }
 
-    public User getUser(Long id) {
+    public UserInfo getUser(Long id) {
         return jbcTemplate.queryForObject(GET_USER, new MapSqlParameterSource("id", id), userMapp);
     }
 
@@ -57,7 +58,7 @@ public class UserRepository {
         params.addValue("id", user.getId());
         params.addValue("login", user.getLogin());
         params.addValue("password", user.getPassword());
-        params.addValue("is_deleted", user.getIs_deleted());
+        params.addValue("is_deleted", user.getIsDeleted());
 
         return params;
     }

@@ -7,5 +7,5 @@ CREATE TABLE jiro_user.user
     PRIMARY KEY (id)
 );
 
-CREATE UNIQUE INDEX user_unix01 ON jiro_user.jiro_user(login)
+CREATE UNIQUE INDEX user_unix01 ON jiro_user.user(login)
 WHERE deleted_at IS FALSE;

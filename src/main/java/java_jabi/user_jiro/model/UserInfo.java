@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class UserInfo {
     private Long id;
     private String login;
-    private Boolean is_deleted;
+    private Boolean isDeleted;
 }

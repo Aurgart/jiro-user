@@ -3,6 +3,7 @@ package java_jabi.user_jiro.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java_jabi.user_jiro.model.User;
+import java_jabi.user_jiro.model.UserData;
 import java_jabi.user_jiro.model.UserInfo;
 import java_jabi.user_jiro.service.UserService;
 import lombok.AllArgsConstructor;
@@ -17,13 +18,13 @@ public class UserController {
 
     @PostMapping
     @Operation(summary = "Создать сотрудника")
-    public UserInfo create(@RequestBody User user){
+    public UserInfo create(@RequestBody UserData user){
         return userService.addUser(user);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/del_user/{id}")
     @Operation(summary = "Удалить сотрудника")
-    public void create(@RequestParam(required = true) Long id){
+    public void create(@PathVariable(required = true) Long id){
         userService.delete(id);
     }
 

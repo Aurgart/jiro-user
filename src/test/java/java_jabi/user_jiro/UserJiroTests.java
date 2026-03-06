@@ -1,6 +1,7 @@
 package java_jabi.user_jiro;
 
 import java_jabi.user_jiro.model.User;
+import java_jabi.user_jiro.model.UserData;
 import java_jabi.user_jiro.repositories.UserRepository;
 import java_jabi.user_jiro.service.UserService;
 import org.junit.jupiter.api.Assertions;
@@ -31,20 +32,19 @@ class UserJiroTests {
 
 	@Test
 	void createUserTest(){
-		User user = testUser(1L,"Testovic",true,"1342jkLfs_1skl");
 		Assertions.assertDoesNotThrow(() -> {
-			userService.addUser(user);
+			userService.addUser(new UserData("Testovic","1342jkLfs_1skl"));
 		});
 		RuntimeException excp = assertThrows(RuntimeException.class, () -> userService.addUser(
-				testUser(2L,"Testovic",true,"1111")));
+				new UserData("Testovic","1111")));
 		Assertions.assertNotNull(excp.getMessage());
 	}
 
-	private User testUser(Long id, String login, Boolean is_deleted,String pass) {
+	private User testUser(Long id, String login, Boolean isDeleted,String pass) {
 		return User.builder()
 				.id(id)
 				.login(login)
-				.is_deleted(is_deleted)
+				.isDeleted(isDeleted)
 				.password(pass)
 				.build();
 	}
