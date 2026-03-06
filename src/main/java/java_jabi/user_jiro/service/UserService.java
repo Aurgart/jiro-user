@@ -22,7 +22,7 @@ public class UserService {
     public UserInfo addUser(User user){
         validateUserData(user);
         user.setPassword(crypto.encode(user.getPassword()));
-        user = users.insert(user);
+        users.insert(user);
         return userToUserInfo(user);
     }
     @Transactional(readOnly = true)
