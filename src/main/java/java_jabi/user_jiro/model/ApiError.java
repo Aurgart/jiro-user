@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ApiError {
-    final boolean result;
-    final String description;
+    final boolean success;
+    final String message;
 }
 
