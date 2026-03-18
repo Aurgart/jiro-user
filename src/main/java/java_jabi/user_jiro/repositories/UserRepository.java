@@ -1,5 +1,6 @@
 package java_jabi.user_jiro.repositories;
 
+import java_jabi.user_jiro.model.Role;
 import java_jabi.user_jiro.model.User;
 import java_jabi.user_jiro.model.UserInfo;
 import java_jabi.user_jiro.repositories.Mapper.UserMapper;
@@ -12,8 +13,8 @@ import org.springframework.stereotype.Repository;
 @AllArgsConstructor
 public class UserRepository {
     private static final String INSERT = """
-            INSERT INTO jiro_user.user(login, password)
-            VALUES (:login, :password)
+            INSERT INTO jiro_user.user(login, password, role)
+            VALUES (:login, :password, :role::jiro_user.user_role)
             RETURNING *;
             """;
     private static final String DELETE = """
@@ -31,6 +32,12 @@ public class UserRepository {
             SELECT *
             FROM jiro_user.user
             WHERE id = :id
+            """;
+
+    private static final String SET_ROLE = """
+            UPDATE jiro_user.user
+            SET role = :role::jiro_user.user_role
+            WHERE id = :id;
             """;
 
     private final UserMapper userMapp;
@@ -52,6 +59,13 @@ public class UserRepository {
         return jbcTemplate.queryForObject(GET_USER, new MapSqlParameterSource("id", id), userMapp);
     }
 
+    public UserInfo setRole(Long id, Role role) {
+        final MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("id", id);
+        params.addValue("role", role);
+        return jbcTemplate.queryForObject(GET_USER, params, userMapp);
+    }
+
     public MapSqlParameterSource userParamForSql(User user) {
         final MapSqlParameterSource params = new MapSqlParameterSource();
 
@@ -59,6 +73,7 @@ public class UserRepository {
         params.addValue("login", user.getLogin());
         params.addValue("password", user.getPassword());
         params.addValue("is_deleted", user.getIsDeleted());
+        params.addValue("role", user.getRole());
 
         return params;
     }

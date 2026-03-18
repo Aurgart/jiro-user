@@ -2,6 +2,7 @@ package java_jabi.user_jiro.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java_jabi.user_jiro.model.Role;
 import java_jabi.user_jiro.model.User;
 import java_jabi.user_jiro.model.UserData;
 import java_jabi.user_jiro.model.UserInfo;
@@ -39,14 +40,29 @@ public class UserController {
     public UserInfo GetUser(@PathVariable("id") Long id) {
         return  userService.getUser(id);
     }
+
     @GetMapping("/user/check/{id}")
     @Operation(summary = "Проверка пользователя.")
     public Boolean chById(@PathVariable("id") Long id) {
         return  userService.checkUser(id);
     }
+
     @GetMapping("/hist_user/check/{id}")
     @Operation(summary = "Проверка пользователя (включая удаленных)")
     public Boolean chHist(@PathVariable("id") Long id) {
         return  userService.checkHistUser(id);
     }
+
+    @GetMapping("/role/set/{id}")
+    @Operation(summary = "Сменить роль пользователя")
+    public UserInfo setRole(@PathVariable("id") Long id,@RequestParam(required = true) Role role) {
+        return  userService.setRole(id, role);
+    }
+
+    @GetMapping("/role/{id}")
+    @Operation(summary = "Получить роль пользователя")
+    public String getRole(@PathVariable("id") Long id) {
+        return  userService.getRole(id);
+    }
+
 }

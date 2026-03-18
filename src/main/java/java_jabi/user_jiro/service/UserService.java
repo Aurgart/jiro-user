@@ -1,6 +1,7 @@
 package java_jabi.user_jiro.service;
 
 import java_jabi.user_jiro.exception.UserException;
+import java_jabi.user_jiro.model.Role;
 import java_jabi.user_jiro.model.User;
 import java_jabi.user_jiro.model.UserData;
 import java_jabi.user_jiro.model.UserInfo;
@@ -43,6 +44,7 @@ public class UserService {
     public UserInfo getUser(Long id){
         return  users.getUser(id);
     }
+
     @Transactional(readOnly = true)
     public Boolean checkUser(Long id){
         UserInfo user = users.getById(id);
@@ -83,5 +85,15 @@ public class UserService {
         final String NO_SPACE = "(?=\\S+$)";
         final String MIN_MAX_CHAR = ".{8,16}";
         return ONE_DIGIT + LOWER_CASE + UPPER_CASE + SPECIAL_CHAR + NO_SPACE + MIN_MAX_CHAR;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public UserInfo setRole(Long id, Role role) {
+        return users.setRole(id, role);
+    }
+
+    @Transactional(readOnly = true)
+    public String getRole(Long id){
+        return users.getUser(id).getRole().toString();
     }
 }
