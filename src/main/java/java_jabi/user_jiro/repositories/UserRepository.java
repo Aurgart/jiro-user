@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 public class UserRepository {
     private static final String INSERT = """
             INSERT INTO jiro_user.user(login, password, role)
-            VALUES (:login, :password, :role::jiro_user.user_role)
+            VALUES (:login, :password, CAST(:role AS jiro_user.user_role))
             RETURNING *;
             """;
     private static final String DELETE = """
@@ -36,8 +36,9 @@ public class UserRepository {
 
     private static final String SET_ROLE = """
             UPDATE jiro_user.user
-            SET role = :role::jiro_user.user_role
-            WHERE id = :id;
+            SET role = CAST(:role AS jiro_user.user_role)
+            WHERE id = :id
+            RETURNING *;
             """;
 
     private final UserMapper userMapp;
@@ -62,8 +63,8 @@ public class UserRepository {
     public UserInfo setRole(Long id, Role role) {
         final MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("id", id);
-        params.addValue("role", role);
-        return jbcTemplate.queryForObject(GET_USER, params, userMapp);
+        params.addValue("role", role.toString());
+        return jbcTemplate.queryForObject(SET_ROLE, params, userMapp);
     }
 
     public MapSqlParameterSource userParamForSql(User user) {
@@ -73,7 +74,7 @@ public class UserRepository {
         params.addValue("login", user.getLogin());
         params.addValue("password", user.getPassword());
         params.addValue("is_deleted", user.getIsDeleted());
-        params.addValue("role", user.getRole());
+        params.addValue("role", user.getRole().toString());
 
         return params;
     }

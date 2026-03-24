@@ -25,6 +25,7 @@ public class UserService {
         User user = User.builder()
                 .login(userData.login())
                 .password(userData.password())
+                .role(userData.role())
                 .build();
         validateUserData(user);
         user.setPassword(crypto.encode(user.getPassword()));
