@@ -19,6 +19,7 @@ import java.time.LocalDate;
 public class UserService {
     private final UserRepository users;
     private final PasswordEncoder crypto;
+    private final TaskExternalService tasks;
 
     @Transactional(rollbackFor = Exception.class)
     public UserInfo addUser(UserData userData){
@@ -38,7 +39,11 @@ public class UserService {
 
     @Transactional(rollbackFor = Exception.class)
     public void delete(Long id){
-        users.delete(id);
+        if(!tasks.checkExistTasks(id)){
+            users.delete(id);
+        }else{
+            throw new UserException("У пользователя есть задачи в работе.");
+        }
     }
 
     @Transactional(readOnly = true)

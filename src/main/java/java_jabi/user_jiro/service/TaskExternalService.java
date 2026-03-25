@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-import java.util.Objects;
-
 @Service
 public class TaskExternalService {
     private final RestClient restClient;
@@ -20,10 +18,7 @@ public class TaskExternalService {
         }
     }
 
-    public boolean checkManagerRole(long userId) {
-        if (Objects.equals(restClient.get().uri("/tasks/existbyuser", userId).retrieve().body(String.class), "MANAGER")) {
-            return true;
-        }
-        return false;
+    public boolean checkExistTasks(long userId) {
+        return Boolean.TRUE.equals(restClient.get().uri("/tasks/existbyuser/{id}", userId).retrieve().body(Boolean.class));
     }
 }
