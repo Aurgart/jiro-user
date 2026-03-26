@@ -21,67 +21,6 @@ public class UserService {
     private final PasswordEncoder crypto;
     private final TaskExternalService tasks;
 
-    @Transactional(rollbackFor = Exception.class)
-    public UserInfo addUser(UserData userData){
-        User user = User.builder()
-                .login(userData.login())
-                .password(userData.password())
-                .role(userData.role())
-                .build();
-        validateUserData(user);
-        user.setPassword(crypto.encode(user.getPassword()));
-        return users.insert(user);
-    }
-    @Transactional(readOnly = true)
-    public UserInfo getById(Long id){
-        return users.getById(id);
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    public void delete(Long id){
-        if(!tasks.checkExistTasksByUser(id)){
-            users.delete(id);
-        }else{
-            throw new UserException("У пользователя есть задачи в работе.");
-        }
-    }
-
-    @Transactional(readOnly = true)
-    public UserInfo getUser(Long id){
-        return  users.getUser(id);
-    }
-
-    @Transactional(readOnly = true)
-    public Boolean checkUser(Long id){
-        UserInfo user = users.getById(id);
-        if(user == null){
-            return false;
-        }else{
-            return true;
-        }
-    }
-    @Transactional(readOnly = true)
-    public Boolean checkHistUser(Long id){
-        UserInfo user = users.getUser(id);
-        if(user == null){
-            return false;
-        }else{
-            return true;
-        }
-    }
-
-    private void validateUserData(User user) {
-        if (!StringUtils.hasText(user.getLogin())) {
-            throw new UserException("Не указан логин");
-        }
-        if (!StringUtils.hasText(user.getPassword())) {
-            throw new UserException("Не указан пароль");
-        }
-        if(!user.getPassword().matches(pattern())){
-            throw new UserException("Пароль не соотвествует требованиям: от 8 до 16 символов, не содержит пробелы, может включать цифры, буквы и часть спец символов");
-        }
-    }
-
     private static String pattern() {
 
         final String ONE_DIGIT = "(?=.*[0-9])";
@@ -94,12 +33,71 @@ public class UserService {
     }
 
     @Transactional(rollbackFor = Exception.class)
+    public UserInfo addUser(UserData userData) {
+        User user = User.builder().login(userData.login()).password(userData.password()).role(userData.role()).build();
+        validateUserData(user);
+        user.setPassword(crypto.encode(user.getPassword()));
+        return users.insert(user);
+    }
+
+    @Transactional(readOnly = true)
+    public UserInfo getById(Long id) {
+        return users.getById(id);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(Long id) {
+        if (!tasks.checkExistTasksByUser(id)) {
+            users.delete(id);
+        } else {
+            throw new UserException("У пользователя есть задачи в работе.");
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public UserInfo getUser(Long id) {
+        return users.getUser(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Boolean checkUser(Long id) {
+        UserInfo user = users.getById(id);
+        if (user == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public Boolean checkHistUser(Long id) {
+        UserInfo user = users.getUser(id);
+        if (user == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private void validateUserData(User user) {
+        if (!StringUtils.hasText(user.getLogin())) {
+            throw new UserException("Не указан логин");
+        }
+        if (!StringUtils.hasText(user.getPassword())) {
+            throw new UserException("Не указан пароль");
+        }
+        if (!user.getPassword().matches(pattern())) {
+            throw new UserException("Пароль не соотвествует требованиям: от 8 до 16 символов, не содержит пробелы, может включать цифры, буквы и часть спец символов");
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
     public UserInfo setRole(Long id, Role role) {
         return users.setRole(id, role);
     }
 
     @Transactional(readOnly = true)
-    public String getRole(Long id){
+    public String getRole(Long id) {
         return users.getUser(id).getRole().toString();
     }
 }

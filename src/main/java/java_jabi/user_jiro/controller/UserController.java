@@ -12,20 +12,20 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v2/")
+@RequestMapping("/api/v2")
 @Tag(name = "Пользователи")
 public class UserController {
     private final UserService userService;
 
     @PostMapping
     @Operation(summary = "Создать сотрудника")
-    public UserInfo create(@RequestBody UserData user){
+    public UserInfo create(@RequestBody UserData user) {
         return userService.addUser(user);
     }
 
     @DeleteMapping("/del_user/{id}")
     @Operation(summary = "Удалить сотрудника")
-    public void create(@PathVariable(required = true) Long id){
+    public void create(@PathVariable(required = true) Long id) {
         userService.delete(id);
     }
 
@@ -38,31 +38,31 @@ public class UserController {
     @GetMapping("/hist_user/{id}")
     @Operation(summary = "Получить пользователя (включая удаленных)")
     public UserInfo GetUser(@PathVariable("id") Long id) {
-        return  userService.getUser(id);
+        return userService.getUser(id);
     }
 
     @GetMapping("/user/check/{id}")
     @Operation(summary = "Проверка пользователя.")
     public Boolean chById(@PathVariable("id") Long id) {
-        return  userService.checkUser(id);
+        return userService.checkUser(id);
     }
 
     @GetMapping("/hist_user/check/{id}")
     @Operation(summary = "Проверка пользователя (включая удаленных)")
     public Boolean chHist(@PathVariable("id") Long id) {
-        return  userService.checkHistUser(id);
+        return userService.checkHistUser(id);
     }
 
     @PatchMapping("/role/set/{id}")
     @Operation(summary = "Сменить роль пользователя")
-    public UserInfo setRole(@PathVariable("id") Long id,@RequestParam(required = true) Role role) {
-        return  userService.setRole(id, role);
+    public UserInfo setRole(@PathVariable("id") Long id, @RequestParam(required = true) Role role) {
+        return userService.setRole(id, role);
     }
 
     @GetMapping("/role/{id}")
     @Operation(summary = "Получить роль пользователя")
     public String getRole(@PathVariable("id") Long id) {
-        return  userService.getRole(id);
+        return userService.getRole(id);
     }
 
 }

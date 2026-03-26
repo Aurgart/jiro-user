@@ -10,10 +10,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Component
-public class UserMapper implements RowMapper<UserInfo>{
+public class UserMapper implements RowMapper<UserInfo> {
 
     @Override
-    public UserInfo mapRow(ResultSet rs, int rownum) throws SQLException{
+    public UserInfo mapRow(ResultSet rs, int rownum) throws SQLException {
         return UserInfo.builder()
                 .id(rs.getLong("id"))
                 .login(rs.getString("login"))
