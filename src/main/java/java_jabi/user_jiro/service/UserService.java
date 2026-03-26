@@ -39,7 +39,7 @@ public class UserService {
 
     @Transactional(rollbackFor = Exception.class)
     public void delete(Long id){
-        if(!tasks.checkExistTasks(id)){
+        if(!tasks.checkExistTasksByUser(id)){
             users.delete(id);
         }else{
             throw new UserException("У пользователя есть задачи в работе.");

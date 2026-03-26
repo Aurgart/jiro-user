@@ -18,7 +18,7 @@ public class TaskExternalService {
         }
     }
 
-    public boolean checkExistTasks(long userId) {
+    public boolean checkExistTasksByUser(long userId) {
         return Boolean.TRUE.equals(restClient.get().uri("/tasks/existbyuser/{id}", userId).retrieve().body(Boolean.class));
     }
 }

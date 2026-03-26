@@ -53,7 +53,7 @@ public class UserController {
         return  userService.checkHistUser(id);
     }
 
-    @GetMapping("/role/set/{id}")
+    @PatchMapping("/role/set/{id}")
     @Operation(summary = "Сменить роль пользователя")
     public UserInfo setRole(@PathVariable("id") Long id,@RequestParam(required = true) Role role) {
         return  userService.setRole(id, role);
